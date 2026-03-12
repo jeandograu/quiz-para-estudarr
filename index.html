@@ -1,55 +1,132 @@
+```html
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
-<title>Simulado de Inglês - 6º Ano</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Super Simulados</title>
 
 <style>
 
 body{
-font-family: Arial;
-background:#2c3e50;
+font-family:Arial;
+margin:0;
+background:#111;
 color:white;
 text-align:center;
 }
 
-#quiz{
-background:white;
-color:black;
-width:520px;
-margin:auto;
+h1{
 padding:20px;
-border-radius:10px;
 }
 
-button{
+#menu button{
 display:block;
-margin:8px auto;
-padding:10px;
-width:300px;
+width:90%;
+max-width:400px;
+margin:10px auto;
+padding:18px;
+font-size:18px;
 border:none;
-background:#3498db;
+border-radius:10px;
+background:#6c5ce7;
 color:white;
-border-radius:6px;
 cursor:pointer;
+}
+
+#quiz{
+display:none;
+padding:20px;
+}
+
+#pergunta{
+font-size:22px;
+margin-bottom:20px;
+}
+
+.opcao{
+width:100%;
+padding:18px;
+margin:10px 0;
+border-radius:10px;
+border:2px solid #ddd;
+font-size:18px;
+cursor:pointer;
+background:white;
+color:black;
+}
+
+.opcao:hover{
+background:#f2f2f2;
 }
 
 .correto{
 background:#2ecc71 !important;
+color:white;
 }
 
 .errado{
 background:#e74c3c !important;
+color:white;
+}
+
+#tempoBarra{
+width:100%;
+height:10px;
+background:#444;
+border-radius:10px;
+margin-bottom:20px;
+overflow:hidden;
+}
+
+#tempo{
+height:100%;
+width:100%;
+background:#00ff9f;
+}
+
+.resultado{
+font-size:28px;
+margin-top:20px;
+}
+
+.voltar{
+margin-top:20px;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#6c5ce7;
+color:white;
+font-size:18px;
+cursor:pointer;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<h1>Simulado de Inglês - 6º Ano 📚</h1>
+<h1>🎮 Super Simulados</h1>
+
+<div id="menu">
+
+<button onclick="iniciar('ingles')">🇬🇧 Inglês</button>
+<button onclick="iniciar('matematica')">➗ Matemática</button>
+<button onclick="iniciar('ciencias')">🔬 Ciências</button>
+<button onclick="iniciar('portugues')">📖 Português</button>
+<button onclick="iniciar('artes')">🎨 Artes</button>
+
+</div>
 
 <div id="quiz">
+
+<div id="tempoBarra">
+<div id="tempo"></div>
+</div>
 
 <h2 id="pergunta"></h2>
 
@@ -59,129 +136,162 @@ background:#e74c3c !important;
 
 <script>
 
-const perguntas = [
+const banco={
 
-{
-pergunta:"1) What is the meaning of 'teacher'?",
-opcoes:["Student","Professor","Diretor","Amigo"],
-resposta:1
-},
-
-{
-pergunta:"2) Complete: She ____ my best friend.",
-opcoes:["am","is","are","be"],
-resposta:1
-},
-
-{
-pergunta:"3) What is the plural of 'foot'?",
-opcoes:["Foots","Feet","Feets","Footes"],
-resposta:1
-},
-
-{
-pergunta:"4) Translate: Eu tenho dois irmãos.",
-opcoes:[
-"I have two brothers",
-"I has two brothers",
-"I am two brothers",
-"I are two brothers"
+ingles:[
+{pergunta:"Past of buy",opcoes:["Buyed","Bought","Buying","Buys"],resposta:1},
+{pergunta:"Plural of mouse",opcoes:["Mouses","Mice","Mouse","Mices"],resposta:1},
+{pergunta:"Opposite of cheap",opcoes:["Expensive","Fast","Cold","Tall"],resposta:0},
+{pergunta:"Past of go",opcoes:["Goed","Went","Gone","Go"],resposta:1},
+{pergunta:"Meaning of hungry",opcoes:["Com fome","Cansado","Bravo","Triste"],resposta:0},
+{pergunta:"Plural of child",opcoes:["Childs","Children","Childes","Childrens"],resposta:1},
+{pergunta:"Opposite of hot",opcoes:["Cold","Warm","Small","Fast"],resposta:0},
+{pergunta:"Translate house",opcoes:["Casa","Carro","Mesa","Janela"],resposta:0},
+{pergunta:"Verb",opcoes:["Run","Blue","House","Table"],resposta:0},
+{pergunta:"Adjective",opcoes:["Happy","Run","Car","Eat"],resposta:0},
+{pergunta:"Future",opcoes:["I eat","I will eat","I ate","I eating"],resposta:1},
+{pergunta:"Correct question",opcoes:["You like pizza","Do you like pizza","Are you like pizza","Does you like pizza"],resposta:1},
+{pergunta:"Past of see",opcoes:["Saw","Seed","Seen","See"],resposta:0},
+{pergunta:"Plural of foot",opcoes:["Foots","Feet","Feets","Footes"],resposta:1},
+{pergunta:"Meaning of teacher",opcoes:["Professor","Aluno","Diretor","Livro"],resposta:0},
+{pergunta:"Opposite of big",opcoes:["Small","Cold","Happy","Young"],resposta:0},
+{pergunta:"Translate dog",opcoes:["Cachorro","Gato","Pato","Vaca"],resposta:0},
+{pergunta:"Translate school",opcoes:["Escola","Banco","Mercado","Hospital"],resposta:0},
+{pergunta:"Plural of man",opcoes:["Mans","Men","Manes","Mens"],resposta:1},
+{pergunta:"Meaning of expensive",opcoes:["Caro","Barato","Velho","Novo"],resposta:0}
 ],
-resposta:0
-},
 
-{
-pergunta:"5) What does 'hungry' mean?",
-opcoes:["Feliz","Cansado","Com fome","Bravo"],
-resposta:2
-},
-
-{
-pergunta:"6) Complete: They ____ playing soccer.",
-opcoes:["is","am","are","be"],
-resposta:2
-},
-
-{
-pergunta:"7) Choose the correct sentence:",
-opcoes:[
-"She go to school",
-"She goes to school",
-"She going to school",
-"She gone to school"
+matematica:[
+{pergunta:"8x7",opcoes:["54","56","64","58"],resposta:1},
+{pergunta:"12²",opcoes:["124","132","144","156"],resposta:2},
+{pergunta:"100÷4",opcoes:["20","25","30","40"],resposta:1},
+{pergunta:"9x9",opcoes:["81","72","91","89"],resposta:0},
+{pergunta:"7x6",opcoes:["36","42","48","52"],resposta:1},
+{pergunta:"15+17",opcoes:["30","31","32","33"],resposta:2},
+{pergunta:"40÷5",opcoes:["6","7","8","9"],resposta:2},
+{pergunta:"5²",opcoes:["10","20","25","30"],resposta:2},
+{pergunta:"6x8",opcoes:["46","48","52","54"],resposta:1},
+{pergunta:"10²",opcoes:["100","90","80","110"],resposta:0},
+{pergunta:"144÷12",opcoes:["10","11","12","13"],resposta:2},
+{pergunta:"3³",opcoes:["6","9","27","18"],resposta:2},
+{pergunta:"25+75",opcoes:["90","95","100","105"],resposta:2},
+{pergunta:"50÷10",opcoes:["4","5","6","7"],resposta:1},
+{pergunta:"7²",opcoes:["42","45","49","52"],resposta:2},
+{pergunta:"2³",opcoes:["6","8","4","10"],resposta:1},
+{pergunta:"90÷9",opcoes:["8","9","10","11"],resposta:2},
+{pergunta:"11x11",opcoes:["121","111","131","141"],resposta:0},
+{pergunta:"60÷3",opcoes:["10","15","20","25"],resposta:2},
+{pergunta:"14+19",opcoes:["31","32","33","34"],resposta:2}
 ],
-resposta:1
-},
 
-{
-pergunta:"8) Opposite of 'big':",
-opcoes:["Tall","Small","Heavy","Fast"],
-resposta:1
-},
-
-{
-pergunta:"9) Translate: Ele está estudando inglês.",
-opcoes:[
-"He study english",
-"He studying english",
-"He is studying english",
-"He studies english"
+ciencias:[
+{pergunta:"Planeta vermelho",opcoes:["Marte","Terra","Vênus","Saturno"],resposta:0},
+{pergunta:"Estrela do sistema solar",opcoes:["Lua","Sol","Marte","Júpiter"],resposta:1},
+{pergunta:"Maior planeta",opcoes:["Terra","Marte","Júpiter","Netuno"],resposta:2},
+{pergunta:"Gás que respiramos",opcoes:["Oxigênio","Hélio","Hidrogênio","Neônio"],resposta:0},
+{pergunta:"Animal mamífero",opcoes:["Cachorro","Cobra","Peixe","Sapo"],resposta:0},
+{pergunta:"Animal que voa",opcoes:["Águia","Leão","Cavalo","Elefante"],resposta:0},
+{pergunta:"Planeta azul",opcoes:["Terra","Marte","Júpiter","Saturno"],resposta:0},
+{pergunta:"Maior animal",opcoes:["Baleia azul","Elefante","Tubarão","Girafa"],resposta:0},
+{pergunta:"Parte da planta",opcoes:["Raiz","Roda","Motor","Parafuso"],resposta:0},
+{pergunta:"Água ferve em",opcoes:["100°C","80°C","90°C","120°C"],resposta:0},
+{pergunta:"Planeta com anéis",opcoes:["Saturno","Terra","Marte","Mercúrio"],resposta:0},
+{pergunta:"Animal ovíparo",opcoes:["Galinha","Cachorro","Gato","Cavalo"],resposta:0},
+{pergunta:"Astro natural da Terra",opcoes:["Lua","Sol","Marte","Vênus"],resposta:0},
+{pergunta:"Energia do sol",opcoes:["Solar","Elétrica","Eólica","Hidráulica"],resposta:0},
+{pergunta:"Animal marinho",opcoes:["Golfinho","Leão","Cavalo","Tigre"],resposta:0},
+{pergunta:"Estado da água gelo",opcoes:["Sólido","Líquido","Gasoso","Plasma"],resposta:0},
+{pergunta:"Animal réptil",opcoes:["Cobra","Cachorro","Gato","Pato"],resposta:0},
+{pergunta:"Planeta mais próximo do sol",opcoes:["Mercúrio","Terra","Marte","Saturno"],resposta:0},
+{pergunta:"Animal herbívoro",opcoes:["Vaca","Leão","Tigre","Lobo"],resposta:0},
+{pergunta:"Animal aquático",opcoes:["Peixe","Leão","Cavalo","Cachorro"],resposta:0}
 ],
-resposta:2
-},
 
-{
-pergunta:"10) What does 'library' mean?",
-opcoes:["Escola","Biblioteca","Restaurante","Hospital"],
-resposta:1
-},
-
-{
-pergunta:"11) Choose the correct question:",
-opcoes:[
-"You like pizza?",
-"Do you like pizza?",
-"Does you like pizza?",
-"Are you like pizza?"
+portugues:[
+{pergunta:"Plural de flor",opcoes:["Flor","Flores","Flors","Florres"],resposta:1},
+{pergunta:"Antônimo de feliz",opcoes:["Triste","Grande","Bom","Claro"],resposta:0},
+{pergunta:"Verbo",opcoes:["Correr","Mesa","Casa","Azul"],resposta:0},
+{pergunta:"Substantivo",opcoes:["Casa","Correr","Rápido","Bonito"],resposta:0},
+{pergunta:"Plural de cão",opcoes:["Cãos","Cães","Cões","Caos"],resposta:1},
+{pergunta:"Antônimo de alto",opcoes:["Baixo","Grande","Forte","Lento"],resposta:0},
+{pergunta:"Adjetivo",opcoes:["Bonito","Correr","Casa","Mesa"],resposta:0},
+{pergunta:"Verbo",opcoes:["Andar","Azul","Mesa","Casa"],resposta:0},
+{pergunta:"Plural de papel",opcoes:["Papeis","Papéis","Papees","Papels"],resposta:1},
+{pergunta:"Antônimo de claro",opcoes:["Escuro","Grande","Pequeno","Feliz"],resposta:0},
+{pergunta:"Substantivo",opcoes:["Livro","Correr","Bonito","Rápido"],resposta:0},
+{pergunta:"Adjetivo",opcoes:["Grande","Mesa","Casa","Andar"],resposta:0},
+{pergunta:"Plural de animal",opcoes:["Animais","Animals","Animales","Animais"],resposta:0},
+{pergunta:"Antônimo de rápido",opcoes:["Lento","Grande","Claro","Forte"],resposta:0},
+{pergunta:"Verbo",opcoes:["Comer","Mesa","Azul","Casa"],resposta:0},
+{pergunta:"Substantivo",opcoes:["Escola","Correr","Bonito","Grande"],resposta:0},
+{pergunta:"Plural de papelão",opcoes:["Papelões","Papelãos","Papeis","Papelons"],resposta:0},
+{pergunta:"Antônimo de bom",opcoes:["Ruim","Grande","Claro","Alto"],resposta:0},
+{pergunta:"Adjetivo",opcoes:["Feliz","Mesa","Casa","Livro"],resposta:0},
+{pergunta:"Verbo",opcoes:["Dormir","Mesa","Casa","Livro"],resposta:0}
 ],
-resposta:1
-},
 
-{
-pergunta:"12) Complete: I ____ 12 years old.",
-opcoes:["is","am","are","be"],
-resposta:1
-},
-
-{
-pergunta:"13) Which word is a verb?",
-opcoes:["Blue","Run","Happy","Tall"],
-resposta:1
-},
-
-{
-pergunta:"14) Translate: Nós estamos felizes.",
-opcoes:[
-"We happy",
-"We are happy",
-"We is happy",
-"We am happy"
-],
-resposta:1
-},
-
-{
-pergunta:"15) What does 'fast' mean?",
-opcoes:["Devagar","Rápido","Grande","Pequeno"],
-resposta:1
-}
-
+artes:[
+{pergunta:"Quem pintou Mona Lisa",opcoes:["Da Vinci","Van Gogh","Picasso","Monet"],resposta:0},
+{pergunta:"Autor Noite Estrelada",opcoes:["Van Gogh","Picasso","Monet","Da Vinci"],resposta:0},
+{pergunta:"Arte dobrar papel",opcoes:["Origami","Pintura","Escultura","Cinema"],resposta:0},
+{pergunta:"Ferramenta pintura",opcoes:["Pincel","Martelo","Serrote","Faca"],resposta:0},
+{pergunta:"Arte japonesa papel",opcoes:["Origami","Cinema","Teatro","Escultura"],resposta:0},
+{pergunta:"Artista cubismo",opcoes:["Picasso","Da Vinci","Monet","Van Gogh"],resposta:0},
+{pergunta:"Pintura famosa Da Vinci",opcoes:["Mona Lisa","Guernica","Girassóis","Noite Estrelada"],resposta:0},
+{pergunta:"Ferramenta desenho",opcoes:["Lápis","Serrote","Martelo","Chave"],resposta:0},
+{pergunta:"Arte tridimensional",opcoes:["Escultura","Pintura","Desenho","Gravura"],resposta:0},
+{pergunta:"Museu guarda",opcoes:["Arte","Comida","Carros","Animais"],resposta:0},
+{pergunta:"Arte de atuar",opcoes:["Teatro","Cinema","Dança","Pintura"],resposta:0},
+{pergunta:"Arte movimento corpo",opcoes:["Dança","Pintura","Escultura","Gravura"],resposta:0},
+{pergunta:"Ferramenta pintar parede",opcoes:["Rolo","Martelo","Serrote","Chave"],resposta:0},
+{pergunta:"Arte antiga cavernas",opcoes:["Pintura rupestre","Cinema","Teatro","Escultura"],resposta:0},
+{pergunta:"Artista impressionismo",opcoes:["Monet","Picasso","Da Vinci","Van Gogh"],resposta:0},
+{pergunta:"Arte fotografia usa",opcoes:["Câmera","Pincel","Lápis","Martelo"],resposta:0},
+{pergunta:"Arte esculpir pedra",opcoes:["Escultura","Pintura","Cinema","Teatro"],resposta:0},
+{pergunta:"Arte animada tela",opcoes:["Cinema","Escultura","Pintura","Gravura"],resposta:0},
+{pergunta:"Arte desenhar",opcoes:["Desenho","Cinema","Teatro","Escultura"],resposta:0},
+{pergunta:"Ferramenta colorir",opcoes:["Lápis de cor","Serrote","Martelo","Faca"],resposta:0}
 ]
 
+}
+
+let perguntas=[]
 let atual=0
 let pontos=0
+let tempo=20
+let timer
 
-function mostrarPergunta(){
+function iniciar(materia){
+
+document.getElementById("menu").style.display="none"
+document.getElementById("quiz").style.display="block"
+
+perguntas=banco[materia]
+atual=0
+pontos=0
+
+mostrar()
+
+}
+
+function mostrar(){
+
+tempo=20
+
+let barra=document.getElementById("tempo")
+
+timer=setInterval(()=>{
+
+tempo--
+
+barra.style.width=(tempo*5)+"%"
+
+if(tempo==0){
+clearInterval(timer)
+proxima()
+}
+
+},1000)
 
 let p=perguntas[atual]
 
@@ -189,62 +299,64 @@ document.getElementById("pergunta").innerText=p.pergunta
 
 let html=""
 
-p.opcoes.forEach((opcao,index)=>{
-html+=`<button onclick="responder(${index},this)">${opcao}</button>`
+p.opcoes.forEach((op,i)=>{
+
+html+=`<button class="opcao" onclick="responder(${i})">${op}</button>`
+
 })
 
 document.getElementById("opcoes").innerHTML=html
+
 }
 
-function responder(opcao,botao){
+function responder(opcao){
+
+clearInterval(timer)
 
 let p=perguntas[atual]
 
-let botoes=document.querySelectorAll("#opcoes button")
+let botoes=document.querySelectorAll(".opcao")
 
 botoes.forEach((btn,i)=>{
 
-if(i===p.resposta){
-btn.classList.add("correto")
-}
+if(i===p.resposta) btn.classList.add("correto")
 
-if(i===opcao && opcao!==p.resposta){
-btn.classList.add("errado")
-}
+if(i===opcao && opcao!==p.resposta) btn.classList.add("errado")
 
 btn.disabled=true
 
 })
 
-if(opcao===p.resposta){
-pontos++
+if(opcao===p.resposta) pontos++
+
+setTimeout(proxima,1200)
+
 }
 
-setTimeout(()=>{
+function proxima(){
 
 atual++
 
 if(atual<perguntas.length){
 
-mostrarPergunta()
+mostrar()
 
 }else{
 
 let porcentagem=Math.round((pontos/perguntas.length)*100)
 
 document.getElementById("quiz").innerHTML=
-`<h2>Prova Finalizada</h2>
-<p>Acertos: ${pontos}/15</p>
-<h2>${porcentagem}%</h2>`
-}
 
-},1500)
+`<h2 class="resultado">Pontuação</h2>
+<h2>${porcentagem}%</h2>
+<button class="voltar" onclick="location.reload()">Voltar ao menu</button>`
 
 }
 
-mostrarPergunta()
+}
 
 </script>
 
 </body>
 </html>
+```
